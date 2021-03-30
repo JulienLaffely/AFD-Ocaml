@@ -104,11 +104,23 @@ let trans_doublons_gene  = generaliser_afd ([(0,[('a',0);('b',1);('b',2)]) ; (1,
 elimination_etat 1 trans_doublons_gene ;;
 
 
-(* 4 *)
+(* 4 *) 
 
-let rec eliminer_tous_bis = function etats_a_supprimer -> function transitions  
+let rec eliminer_tous = function couple_initial_final ->function transitions ->
+	let etat_a_supprimer = List.find_opt (fun (x,y)-> (x <> fst couple_initial_final) && (x <> snd couple_initial_final)) transitions in
+	match etat_a_supprimer with
+	 None -> transitions
+	| Some(num,liste_transitions) -> eliminer_tous couple_initial_final (elimination_etat num transitions);;
 
-let rec eliminer_tous = function couple_initial_final -> function nb etat ->function transitions ->
+eliminer_tous (0,3) trans_gene ;;
+
+let rec expression_reguliere = function etat_initial -> function etat_final -> function transitions ->
+
+
+(* let rec eliminer_tous_pour_tout_etats_acceptants = function etat_initial -> function etats_acceptants -> function fonction_transitions ->
+	match etats_acceptants with
+	  num::[] ->  eliminer_tous (etat_initial,num) fonction_transitions
+	| num::r -> Ou((eliminer_tous (etat_initial,num) fonction_transitions),(eliminer_tous_pour_tout_etats_acceptants etat_initial r fonctions_transitions)) ;;*)
 	
 
 (* 5 *)
